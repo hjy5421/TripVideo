@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>방구석 여행</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        #header {
+            background: url(https://wallpapercave.com/wp/wp4728101.jpg) center center / cover no-repeat;
+        }
+
+        .search {
+            width: 100%;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            height: 50px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #322468;
+        }
+
+        .search-input {
+            color: white;
+            border: 0;
+            outline: 0;
+            background: none;
+            width: 0;
+            margin-top: 5px;
+            caret-color: transparent;
+            line-height: 20px;
+            transition: width 0.4s linear;
+        }
+
+        .search .search-input {
+            padding: 0 10px;
+            width: 100%;
+            caret-color: #322468; /*#536bf6;*/
+            font-size: 19px;
+            font-weight: 300;
+            color: black;
+            transition: width 0.4s linear;
+        }
+
+        .search-icon {
+            height: 34px;
+            width: 34px;
+            float: right;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background-color: #322468;
+            font-size: 10px;
+            bottom: 30px;
+            position: relative;
+            border-radius: 5px
+        }
+
+        .search-icon:hover {
+            color: #fff !important
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#video-list").html("");
+            showVideo();
+        });
+
+        function searchVideo() {
+            let title = $('#video-title').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/video",
+                data: {title_give: title},
+                success: function (response) {
+                    window.location.reload();
+                }
+            })
+        }
+
+        function showVideo() {
+            $.ajax({
+                type: "GET",
+                url: "/video",
+                data: {},
+                success: function (response) {
+                    let videos = response['all_videos']
+                    for (let i = 0; i < videos.length; i++) {
+                        let title = videos[i]['title']
+                        let desc = videos[i]['desc'];
+                        let img_url = videos[i]['img_url'];
+                        let url = videos[i]['url'];
+
+                        let temp_html = ` <div class="col-lg-4 mb-4">
+                                            <div class="card">
+                                                <img src=${img_url}
+                                                     alt="" class="card-img-top">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">${desc}</p>
+                                                    <a href=${url} class="btn btn-outline-success btn-sm">Go to Video</a>
+                                                    <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>`
+                        $('#video-list').append(temp_html)
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<nav class="bg-dark navbar-dark">
+    <div class="container">
+        <a href="" class="navbar-brand"><i class="fas fa-tree mr-2"></i>Travel</a>
+    </div>
+</nav>
+<section id="header" class="jumbotron text-center">
+    <h1 class="display-3" style="color: white">방구석에서 떠나는 여행</h1>
+    <p class="lead" style="color: white">가고 싶은 도시 영상을 통해 여행 기분을 느껴보세요.</p>
+</section>
+
+<div class="container mt-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-9">
+            <div class="d-flex justify-content-center px-5">
+                <div class="search">
+                    <input type="text" id="video-title" class="search-input" placeholder="여행지를 입력해주세요..." name="">
+                    <a href="#" class="search-icon" onclick="searchVideo()"> <i class="fa fa-search"></i> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="gallery">
+    <div class="container">
+        <div class="row" id="video-list">
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
+                         alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Sunset</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut eum similique
+                            repellat a laborum, rerum voluptates ipsam eos quo tempore iusto dolore modi dolorum in
+                            pariatur. Incidunt repellendus praesentium quae!</p>
+                        <a href="" class="btn btn-outline-success btn-sm">Read More</a>
+                        <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
