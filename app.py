@@ -3,7 +3,7 @@ from googleapiclient.discovery import build
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.dbsparta
 
 DEVELOPER_KEY = "AIzaSyAlgG1vbXRaP5Oeqx3YgewDA1MizWcoW3A"
