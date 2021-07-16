@@ -6,7 +6,7 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
-DEVELOPER_KEY = ""
+DEVELOPER_KEY = "AIzaSyAlgG1vbXRaP5Oeqx3YgewDA1MizWcoW3A"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
